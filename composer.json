@@ -1,0 +1,33 @@
+{
+    "name": "kba-team/serial-port",
+    "description": "Connect to serial ports using TCP connections.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gregor J.",
+            "email": "gregor-j@users.noreply.github.com",
+            "role": "developer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-sockets": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "kbATeam\\SerialPort\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\kbATeam\\SerialPort\\": "tests/"
+        }
+    }
+}
