@@ -1,5 +1,6 @@
 language: php
-sudo: false
+os: linux
+dist: bionic
 php:
   - 7.2
   - 7.3
