@@ -7,6 +7,8 @@
 
 Class to connect to serial ports using TCP connections.
 
+**ATTENTION: This is work in progress! Don't use this code, until this message disappears.**
+
 Use [pySerial](https://pyserial.readthedocs.io/en/latest/examples.html) to map serial devices to TCP ports.
 
 [license-mit]: https://img.shields.io/badge/license-MIT-blue.svg
