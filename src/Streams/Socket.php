@@ -12,6 +12,8 @@ use function feof;
 use function fgetc;
 use function fsockopen;
 use function fwrite;
+use function is_resource;
+use function mb_strlen;
 use function stream_set_blocking;
 use function stream_set_timeout;
 
@@ -55,9 +57,9 @@ class Socket implements Stream
 
     /**
      * Create a TCP socket.
-     * @param string   $host The hostname.
-     * @param int      $port The port number.
-     * @param float    $timeout The optional connection timeout, in seconds.
+     * @param string     $host The hostname.
+     * @param int        $port The port number.
+     * @param float|null $timeout The optional connection timeout, in seconds.
      */
     public function __construct(string $host, int $port, float $timeout = null)
     {
