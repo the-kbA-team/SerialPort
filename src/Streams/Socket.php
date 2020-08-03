@@ -4,18 +4,17 @@ namespace kbATeam\SerialPort\Streams;
 
 use kbATeam\SerialPort\Exceptions\OpenStreamException;
 use kbATeam\SerialPort\Exceptions\StreamStateException;
+use kbATeam\SerialPort\Exceptions\TimeoutException;
 use kbATeam\SerialPort\Exceptions\WriteStreamException;
 use kbATeam\SerialPort\Interfaces\Stream;
 use function error_get_last;
 use function fclose;
-use function feof;
 use function fgetc;
 use function fsockopen;
 use function fwrite;
 use function is_resource;
-use function mb_strlen;
-use function stream_set_blocking;
 use function stream_set_timeout;
+use function strlen;
 
 /**
  * Class Socket
@@ -110,7 +109,7 @@ class Socket implements Stream
         if (!is_resource($this->socket)) {
             throw new StreamStateException('Stream not opened.');
         }
-        $length = mb_strlen($string);
+        $length = strlen($string);
         $bytes = fwrite($this->socket, $string, $length);
         if ($bytes === false) {
             throw new WriteStreamException(error_get_last());
@@ -142,27 +141,5 @@ class Socket implements Stream
             throw new StreamStateException('Stream not opened.');
         }
         return stream_set_timeout($this->socket, $seconds, $microseconds);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function eof(): bool
-    {
-        if (!is_resource($this->socket)) {
-            throw new StreamStateException('Stream not opened.');
-        }
-        return feof($this->socket);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function blocking(bool $mode): bool
-    {
-        if (!is_resource($this->socket)) {
-            throw new StreamStateException('Stream not opened.');
-        }
-        return stream_set_blocking($this->socket, $mode);
     }
 }

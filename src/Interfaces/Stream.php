@@ -51,28 +51,4 @@ interface Stream
      * @return bool Returns TRUE on success or FALSE on failure.
      */
     public function setTimeout(int $seconds, int $microseconds): bool;
-
-    /**
-     * Tests for end-of-file on the stream.
-     * @return bool Returns TRUE if the stream is at EOF or an error occurs
-     *              (including socket timeout); otherwise returns FALSE.
-     * @throws \kbATeam\SerialPort\Exceptions\StreamStateException
-     */
-    public function eof(): bool;
-
-    /**
-     * Set blocking/non-blocking mode on the stream.
-     * This function works for any stream that supports non-blocking mode
-     * (currently, regular files and socket streams).
-     * @param bool $mode If mode is FALSE, the given stream will be switched to
-     *                   non-blocking mode, and if TRUE, it will be switched to
-     *                   blocking mode. This affects calls like fgets() and
-     *                   fread() that read from the stream. In non-blocking mode
-     *                   an fgets() call will always return right away while in
-     *                   blocking mode it will wait for data to become available
-     *                   on the stream.
-     * @return bool Returns TRUE on success or FALSE on failure.
-     * @throws \kbATeam\SerialPort\Exceptions\StreamStateException
-     */
-    public function blocking(bool $mode): bool;
 }
