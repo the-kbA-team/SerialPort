@@ -2,7 +2,6 @@
 
 namespace kbATeam\SerialPort\Exceptions;
 
-
 /**
  * Class WriteStreamException
  * @package kbATeam\SerialPort\Exceptions
@@ -10,5 +9,4 @@ namespace kbATeam\SerialPort\Exceptions;
  */
 class WriteStreamException extends RuntimeException
 {
-
 }

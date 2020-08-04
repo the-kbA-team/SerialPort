@@ -2,7 +2,6 @@
 
 namespace kbATeam\SerialPort\Exceptions;
 
-
 /**
  * Class LogicException
  * @package kbATeam\SerialPort\Exceptions

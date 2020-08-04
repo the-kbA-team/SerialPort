@@ -2,7 +2,6 @@
 
 namespace kbATeam\SerialPort\Exceptions;
 
-
 /**
  * Class StreamStateException
  * @package kbATeam\SerialPort\Exceptions

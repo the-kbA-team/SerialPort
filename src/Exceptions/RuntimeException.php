@@ -2,7 +2,6 @@
 
 namespace kbATeam\SerialPort\Exceptions;
 
-
 /**
  * Class RuntimeException
  * @package kbATeam\SerialPort\Exceptions

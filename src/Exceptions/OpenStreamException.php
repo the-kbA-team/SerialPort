@@ -2,7 +2,6 @@
 
 namespace kbATeam\SerialPort\Exceptions;
 
-
 /**
  * Class OpenStreamException
  * @package kbATeam\SerialPort\Exceptions
