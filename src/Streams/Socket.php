@@ -4,7 +4,6 @@ namespace kbATeam\SerialPort\Streams;
 
 use kbATeam\SerialPort\Exceptions\OpenStreamException;
 use kbATeam\SerialPort\Exceptions\StreamStateException;
-use kbATeam\SerialPort\Exceptions\TimeoutException;
 use kbATeam\SerialPort\Exceptions\WriteStreamException;
 use kbATeam\SerialPort\Interfaces\Stream;
 use function error_get_last;
@@ -141,5 +140,17 @@ class Socket implements Stream
             throw new StreamStateException('Stream not opened.');
         }
         return stream_set_timeout($this->socket, $seconds, $microseconds);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function timedOut(): bool
+    {
+        if (!is_resource($this->socket)) {
+            throw new StreamStateException('Stream not opened.');
+        }
+        $metadata = stream_get_meta_data($this->socket);
+        return (bool)$metadata['timed_out'];
     }
 }

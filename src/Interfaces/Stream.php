@@ -45,10 +45,18 @@ interface Stream
     public function readChar(): ?string;
 
     /**
-     * Set timeout period on the stream
+     * Set timeout period on the stream.
      * @param int $seconds The seconds part of the timeout to be set.
      * @param int $microseconds The microseconds part of the timeout to be set.
      * @return bool Returns TRUE on success or FALSE on failure.
+     * @throws \kbATeam\SerialPort\Exceptions\StreamStateException
      */
     public function setTimeout(int $seconds, int $microseconds): bool;
+
+    /**
+     * Retrieves header/meta data from the stream.
+     * @return bool TRUE if the stream timed out while waiting for data on the last readChar().
+     * @throws \kbATeam\SerialPort\Exceptions\StreamStateException
+     */
+    public function timedOut(): bool;
 }
