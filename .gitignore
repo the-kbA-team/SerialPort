@@ -4,3 +4,5 @@
 composer.lock
 /vendor/
 .phpunit.result.cache
+/fifo
+/nc.pid
