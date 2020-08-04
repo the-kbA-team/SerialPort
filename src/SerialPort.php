@@ -14,7 +14,7 @@ use kbATeam\SerialPort\Interfaces\Stream;
  * @package kbATeam\SerialPort
  * @author  Gregor J.
  */
-class SerialPort implements Communication
+final class SerialPort implements Communication
 {
     /**
      * Number of microseconds per second.

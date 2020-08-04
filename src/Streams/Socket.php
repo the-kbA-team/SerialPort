@@ -26,7 +26,7 @@ use function strlen;
  * @author  Gregor J.
  * @author  Peter Gribanov
  */
-class Socket implements Stream
+final class Socket implements Stream
 {
     /**
      * Default connection timeout in seconds.
