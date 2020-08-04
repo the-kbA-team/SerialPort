@@ -83,7 +83,7 @@ class Socket implements Stream
         if (is_resource($this->socket)) {
             throw new StreamStateException('Stream already opened.');
         }
-        $socket = fsockopen($this->host, $this->port, $errno, $errstr, $this->connectionTimeout);
+        $socket = @fsockopen($this->host, $this->port, $errno, $errstr, $this->connectionTimeout);
         if (!is_resource($socket)) {
             throw new OpenStreamException($errstr, $errno);
         }
