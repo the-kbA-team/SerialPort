@@ -14,7 +14,6 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "ext-mbstring": "*",
         "ext-sockets": "*"
     },
     "autoload": {
@@ -36,7 +35,7 @@
             "cat ./fifo | nc -l 127.0.0.1 9999 -k > ./fifo & echo \"$!\" > ./nc.pid"
         ],
         "stop-echo": [
-            "kill $(cat ./nc.pid) || true",
+            "if [ -f ./nc.pid ]; then kill $(cat ./nc.pid) || true; fi",
             "rm -f ./nc.pid ./fifo"
         ]
     }
