@@ -10,14 +10,12 @@ namespace kbATeam\SerialPort\Interfaces;
 interface Communication
 {
     /**
-     * Open a serial port connection.
-     * @param \kbATeam\SerialPort\Interfaces\Stream $stream The stream class
-     * @param int|null                              $attempts Optional number of connection attempts. Default see SerialPort::DEFAULT_ATTEMPTS
-     * @param float|null                            $retryWait Optional number of seconds to wait between connection attempts. Default: see SerialPort::DEFAULT_RETRY_WAIT
+     * Open a serial port connection using the given stream.
+     * @param \kbATeam\SerialPort\Interfaces\Stream $stream
      * @throws \kbATeam\SerialPort\Exceptions\OpenStreamException
      * @throws \kbATeam\SerialPort\Exceptions\StreamStateException
      */
-    public function __construct(Stream $stream, int $attempts = null, float $retryWait = null);
+    public function __construct(Stream $stream);
 
     /**
      * Close the serial port connection.
