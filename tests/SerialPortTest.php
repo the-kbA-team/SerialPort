@@ -8,7 +8,6 @@ use kbATeam\SerialPort\Exceptions\OpenStreamException;
 use kbATeam\SerialPort\Exceptions\TimeoutException;
 use kbATeam\SerialPort\Interfaces\Stream;
 use kbATeam\SerialPort\SerialPort;
-use kbATeam\SerialPort\Streams\Socket;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -56,7 +55,8 @@ class SerialPortTest extends TestCase
         try {
             /** @noinspection PhpParamsInspection */
             new SerialPort($stream, 3, 0.1);
-        } catch (OpenStreamException $exception) {}
+        } catch (OpenStreamException $exception) {
+        }
         $duration = microtime(true) - $start;
         /**
          * There were 3 connection attempts and between each one, a sleep time
@@ -81,7 +81,8 @@ class SerialPortTest extends TestCase
         try {
             /** @noinspection PhpParamsInspection */
             new SerialPort($stream);
-        } catch (OpenStreamException $exception) {}
+        } catch (OpenStreamException $exception) {
+        }
         $duration = microtime(true) - $start;
         $expectedDuration = (SerialPort::DEFAULT_ATTEMPTS - 1) * SerialPort::DEFAULT_RETRY_WAIT;
         static::assertGreaterThanOrEqual($expectedDuration, $duration);
@@ -170,7 +171,8 @@ class SerialPortTest extends TestCase
         $exception = null;
         try {
             $device->readUntil('Z');
-        } catch (TimeoutException $exception) {}
+        } catch (TimeoutException $exception) {
+        }
         static::assertInstanceOf(TimeoutException::class, $exception, 'TimeoutException was never thrown!');
         static::assertSame('ABC', $exception->getResponse());
     }
@@ -196,7 +198,8 @@ class SerialPortTest extends TestCase
         $exception = null;
         try {
             $device->readUntil('Z');
-        } catch (EofException $exception) {}
+        } catch (EofException $exception) {
+        }
         static::assertInstanceOf(EofException::class, $exception, 'EofException was never thrown!');
         static::assertSame('ABC', $exception->getResponse());
     }
