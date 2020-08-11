@@ -66,12 +66,16 @@ final class SerialPort implements Communication
         do {
             $char = $this->stream->readChar();
             if ($char === null && $this->stream->timedOut()) {
-                throw new TimeoutException($response,
-                    'Timed out while waiting for termination character.');
+                throw new TimeoutException(
+                    $response,
+                    'Timed out while waiting for termination character.'
+                );
             }
             if ($char === null) {
-                throw new EofException($response,
-                    'EOF before termination character.');
+                throw new EofException(
+                    $response,
+                    'EOF before termination character.'
+                );
             }
             $response .= $char;
         } while ($char !== $termination);
