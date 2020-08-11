@@ -44,51 +44,17 @@ class SerialPortTest extends TestCase
     /**
      * Test connection retries.
      */
-    public function testConnectionRetries(): void
+    public function testConnectionFailed(): void
     {
         $stream = $this->getMockBuilder(Stream::class)->getMock();
-        $stream->expects(static::exactly(3))
+        $stream->expects(static::once())
             ->method('open')
             ->willThrowException(new OpenStreamException('Connection failed!', 111));
-        $exception = null;
-        $start = microtime(true);
-        try {
-            /** @noinspection PhpParamsInspection */
-            new SerialPort($stream, 3, 0.1);
-        } catch (OpenStreamException $exception) {
-        }
-        $duration = microtime(true) - $start;
-        /**
-         * There were 3 connection attempts and between each one, a sleep time
-         * of 0.1s, resulting in overall 0.2s of sleep.
-         */
-        static::assertGreaterThanOrEqual(0.2, $duration);
-        static::assertInstanceOf(OpenStreamException::class, $exception, 'OpenStreamException was never thrown.');
-        static::assertSame('Connection failed!', $exception->getMessage());
-        static::assertSame(111, $exception->getCode());
-    }
-
-    /**
-     * Test default connection retries.
-     */
-    public function testDefaultConnectionRetries(): void
-    {
-        $stream = $this->getMockBuilder(Stream::class)->getMock();
-        $stream->method('open')
-            ->willThrowException(new OpenStreamException('Connection failed!', 111));
-        $exception = null;
-        $start = microtime(true);
-        try {
-            /** @noinspection PhpParamsInspection */
-            new SerialPort($stream);
-        } catch (OpenStreamException $exception) {
-        }
-        $duration = microtime(true) - $start;
-        $expectedDuration = (SerialPort::DEFAULT_ATTEMPTS - 1) * SerialPort::DEFAULT_RETRY_WAIT;
-        static::assertGreaterThanOrEqual($expectedDuration, $duration);
-        static::assertInstanceOf(OpenStreamException::class, $exception, 'OpenStreamException was never thrown.');
-        static::assertSame('Connection failed!', $exception->getMessage());
-        static::assertSame(111, $exception->getCode());
+        $this->expectException(OpenStreamException::class);
+        $this->expectExceptionMessage('Connection failed!');
+        $this->expectExceptionCode(111);
+        /** @noinspection PhpParamsInspection */
+        new SerialPort($stream);
     }
 
     /**
