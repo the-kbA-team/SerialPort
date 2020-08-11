@@ -37,7 +37,7 @@ interface Stream
     public function write(string $string): int;
 
     /**
-     * Gets character from
+     * Read a single character from the stream.
      * @return string|null Returns a string containing a single character read
      *                     from the stream. Returns NULL on EOF.
      * @throws \kbATeam\SerialPort\Exceptions\StreamStateException
@@ -54,7 +54,7 @@ interface Stream
     public function setTimeout(int $seconds, int $microseconds): bool;
 
     /**
-     * Retrieves header/meta data from the stream.
+     * Retrieves timeout meta data from the stream.
      * @return bool TRUE if the stream timed out while waiting for data on the last readChar().
      * @throws \kbATeam\SerialPort\Exceptions\StreamStateException
      */
