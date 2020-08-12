@@ -3,8 +3,7 @@
 namespace kbATeam\SerialPort\Interfaces;
 
 /**
- * Interface Stream
- * Defines how to read from either a file or a tcp connection.
+ * A stream interface to write to and read from.
  *
  * Bluntly copied and adapted from Peter Gribanovs example:
  * @link https://github.com/jupeter/clean-code-php/issues/178

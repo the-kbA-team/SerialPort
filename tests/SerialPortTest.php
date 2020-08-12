@@ -2,10 +2,12 @@
 
 namespace Tests\kbATeam\SerialPort;
 
-use kbATeam\SerialPort\Exceptions\DomainException;
-use kbATeam\SerialPort\Exceptions\EofException;
 use kbATeam\SerialPort\Exceptions\OpenStreamException;
-use kbATeam\SerialPort\Exceptions\TimeoutException;
+use kbATeam\SerialPort\Interfaces\Communication\Command;
+use kbATeam\SerialPort\Interfaces\Communication\Response;
+use kbATeam\SerialPort\Interfaces\Communication\Value;
+use kbATeam\SerialPort\Interfaces\Stream\Reader;
+use kbATeam\SerialPort\Interfaces\Stream\Timeout;
 use kbATeam\SerialPort\Interfaces\Stream;
 use kbATeam\SerialPort\SerialPort;
 use PHPUnit\Framework\TestCase;
@@ -41,8 +43,11 @@ class SerialPortTest extends TestCase
     /**
      * Test writing to serial port.
      */
-    public function testWrite(): void
+    public function testCommandWithoutResponse(): void
     {
+        /**
+         * Build stream mock
+         */
         $stream = $this->getMockBuilder(Stream::class)->getMock();
         $stream->expects(static::once())
             ->method('open');
@@ -50,159 +55,92 @@ class SerialPortTest extends TestCase
             ->method('close');
         $stream->expects(static::once())
             ->method('write')
-            ->with('test message')
-            ->willReturn(strlen('test message'));
-        /** @noinspection PhpParamsInspection */
-        $device = new SerialPort($stream);
-        $device->write('test message');
-    }
-
-    /**
-     * Test reading from serial port.
-     */
-    public function testReadChar(): void
-    {
-        $stream = $this->getMockBuilder(Stream::class)->getMock();
-        $stream->expects(static::once())
-            ->method('open');
-        $stream->expects(static::once())
-            ->method('close');
-        $stream->expects(self::exactly(3))
-            ->method('readChar')
-            ->will(self::onConsecutiveCalls('1', '2', null));
-        /** @noinspection PhpParamsInspection */
-        $device = new SerialPort($stream);
-        $result = $device->read();
-        static::assertSame('12', $result);
-    }
-
-    /**
-     * Test reading from serial port until a given character appears.
-     */
-    public function testReadUntil(): void
-    {
-        $stream = $this->getMockBuilder(Stream::class)->getMock();
-        $stream->expects(static::once())
-            ->method('open');
-        $stream->expects(static::once())
-            ->method('close');
-        $stream->expects(static::never())
-            ->method('timedOut');
-        $stream->expects(self::exactly(2))
-            ->method('readChar')
-            ->will(self::onConsecutiveCalls('A', 'B', 'C', null));
-        /** @noinspection PhpParamsInspection */
-        $device = new SerialPort($stream);
-        $result = $device->readUntil('B');
-        static::assertSame('AB', $result);
-    }
-
-    /**
-     * Test reading from serial port until timeout because the given char didn't appear
-     */
-    public function testReadUntilTimeout(): void
-    {
-        $stream = $this->getMockBuilder(Stream::class)->getMock();
-        $stream->expects(static::once())
-            ->method('open');
-        $stream->expects(static::once())
-            ->method('close');
-        $stream->expects(static::once())
-            ->method('timedOut')
-            ->willReturn(true);
-        $stream->expects(self::exactly(4))
-            ->method('readChar')
-            ->will(self::onConsecutiveCalls('A', 'B', 'C', null));
-        /** @noinspection PhpParamsInspection */
-        $device = new SerialPort($stream);
-        $exception = null;
-        try {
-            $device->readUntil('Z');
-        } catch (TimeoutException $exception) {
-        }
-        static::assertInstanceOf(TimeoutException::class, $exception, 'TimeoutException was never thrown!');
-        static::assertSame('ABC', $exception->getResponse());
-    }
-
-    /**
-     * Test reading from serial port until EOF because the given char didn't appear.
-     */
-    public function testReadUntilEof(): void
-    {
-        $stream = $this->getMockBuilder(Stream::class)->getMock();
-        $stream->expects(static::once())
-            ->method('open');
-        $stream->expects(static::once())
-            ->method('close');
-        $stream->expects(static::once())
-            ->method('timedOut')
+            ->with(self::identicalTo('test command'))
+            ->willReturn(strlen('test command'));
+        /**
+         * Build command mock
+         */
+        $command = $this->getMockBuilder(Command::class)->getMock();
+        $command->expects(static::once())
+            ->method('expectResponse')
             ->willReturn(false);
-        $stream->expects(self::exactly(4))
-            ->method('readChar')
-            ->will(self::onConsecutiveCalls('A', 'B', 'C', null));
+        $command->expects(static::once())
+            ->method('get')
+            ->willReturn('test command');
         /** @noinspection PhpParamsInspection */
         $device = new SerialPort($stream);
-        $exception = null;
-        try {
-            $device->readUntil('Z');
-        } catch (EofException $exception) {
-        }
-        static::assertInstanceOf(EofException::class, $exception, 'EofException was never thrown!');
-        static::assertSame('ABC', $exception->getResponse());
+        /** @noinspection PhpParamsInspection */
+        $result = $device->invoke($command);
+        static::assertNull($result);
     }
 
     /**
-     * Data provider for testSetTimeout()
-     * @return array[]
+     * Test writing to serial port.
      */
-    public static function provideSetTimeout(): array
+    public function testCommandWithResponse(): void
     {
-        return [
-            [2.9, 2, 900000],
-            [3.1, 3, 100000],
-            [4.000005, 4, 5],
-            [5.0006, 5, 600]
-        ];
-    }
-
-    /**
-     * @param float $timeout
-     * @param int   $seconds
-     * @param int   $microseconds
-     * @dataProvider provideSetTimeout
-     */
-    public function testSetTimeout(float $timeout, int $seconds, int $microseconds): void
-    {
+        /**
+         * Build stream mock object
+         */
         $stream = $this->getMockBuilder(Stream::class)->getMock();
         $stream->expects(static::once())
             ->method('open');
         $stream->expects(static::once())
             ->method('close');
         $stream->expects(static::once())
-            ->method('setTimeout')
-            ->with($seconds, $microseconds)
+            ->method('write')
+            ->with(self::identicalTo('another command'))
+            ->willReturn(strlen('another command'));
+        /**
+         * Build reader mock object
+         */
+        $reader = $this->getMockBuilder(Reader::class)->getMock();
+        $reader->expects(static::once())
+            ->method('read')
+            ->with(static::isInstanceOf(Timeout::class))
+            ->willReturn('test response');
+        /**
+         * Build value mock object
+         */
+        $value = $this->getMockBuilder(Value::class)->getMock();
+        $value->expects(static::once())
+            ->method('get')
+            ->willReturn('test response');
+        /**
+         * Build response mock object
+         */
+        $response = $this->getMockBuilder(Response::class)->getMock();
+        $response->expects(static::once())
+            ->method('get')
+            ->with(self::equalTo(0))
+            ->willReturn($value);
+        /**
+         * Build command mock object
+         */
+        $command = $this->getMockBuilder(Command::class)->getMock();
+        $command->expects(static::once())
+            ->method('expectResponse')
             ->willReturn(true);
+        $command->expects(static::once())
+            ->method('get')
+            ->willReturn('another command');
+        $command->expects(static::once())
+            ->method('getTimeout')
+            ->willReturn($this->getMockBuilder(Timeout::class)->getMock());
+        $command->expects(static::once())
+            ->method('getReader')
+            ->willReturn($reader);
+        $command->expects(static::once())
+            ->method('getResponse')
+            ->with('test response')
+            ->willReturn($response);
+        /**
+         * Run invoke test with response
+         */
         /** @noinspection PhpParamsInspection */
         $device = new SerialPort($stream);
-        $device->setTimeout($timeout);
-    }
-
-    /**
-     * Test exception on timeout below 0.
-     */
-    public function testSetTimeoutBelowZero(): void
-    {
-        $stream = $this->getMockBuilder(Stream::class)->getMock();
-        $stream->expects(static::once())
-            ->method('open');
-        $stream->expects(static::once())
-            ->method('close');
-        $stream->expects(static::never())
-            ->method('setTimeout');
         /** @noinspection PhpParamsInspection */
-        $device = new SerialPort($stream);
-        $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Timeout below 0.');
-        $device->setTimeout(-1.0);
+        $result = $device->invoke($command);
+        static::assertSame($result->get(0)->get(), 'test response');
     }
 }
