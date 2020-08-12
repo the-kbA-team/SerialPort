@@ -37,7 +37,7 @@ final class TerminatedTest extends TestCase
     {
         $stream = $this->getMockBuilder(Stream::class)->getMock();
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Multiple termination characters given!');
+        $this->expectExceptionMessage('Multiple termination characters given.');
         /** @noinspection PhpParamsInspection */
         new Terminated($stream, 'AB');
     }
