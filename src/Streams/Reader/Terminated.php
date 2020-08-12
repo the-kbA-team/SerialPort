@@ -8,6 +8,7 @@ use kbATeam\SerialPort\Exceptions\TimeoutException;
 use kbATeam\SerialPort\Interfaces\Stream;
 use kbATeam\SerialPort\Interfaces\Stream\Reader;
 use kbATeam\SerialPort\Interfaces\Stream\Timeout;
+use function strlen;
 
 /**
  * Read from the stream until the given character appears.
@@ -39,7 +40,7 @@ final class Terminated implements Reader
             throw new DomainException('No termination character given.');
         }
         if (strlen($termination) > 1) {
-            throw new DomainException('Multiple termination characters given!');
+            throw new DomainException('Multiple termination characters given.');
         }
         $this->termination = $termination;
     }

@@ -4,6 +4,8 @@ namespace kbATeam\SerialPort\Streams\Timeouts;
 
 use kbATeam\SerialPort\Exceptions\DomainException;
 use kbATeam\SerialPort\Interfaces\Stream\Timeout;
+use function explode;
+use function number_format;
 
 /**
  * Class Seconds
