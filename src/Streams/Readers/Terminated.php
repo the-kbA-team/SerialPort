@@ -1,6 +1,6 @@
 <?php
 
-namespace kbATeam\SerialPort\Streams\Reader;
+namespace kbATeam\SerialPort\Streams\Readers;
 
 use kbATeam\SerialPort\Exceptions\DomainException;
 use kbATeam\SerialPort\Exceptions\EofException;
@@ -12,7 +12,7 @@ use function strlen;
 
 /**
  * Read from the stream until the given character appears.
- * @package kbATeam\SerialPort\Streams\Reader
+ * @package kbATeam\SerialPort\Streams\Readers
  * @author  Gregor J.
  */
 final class Terminated implements Reader

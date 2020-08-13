@@ -1,6 +1,6 @@
 <?php
 
-namespace kbATeam\SerialPort\Streams\Reader;
+namespace kbATeam\SerialPort\Streams\Readers;
 
 use kbATeam\SerialPort\Interfaces\Stream;
 use kbATeam\SerialPort\Interfaces\Stream\Reader;
@@ -9,7 +9,7 @@ use kbATeam\SerialPort\Interfaces\Stream\Timeout;
 /**
  * Read from the stream until either EOF or the timeout is reached but don't throw
  * an exception upon timeout.
- * @package kbATeam\SerialPort\Streams\Reader
+ * @package kbATeam\SerialPort\Streams\Readers
  * @author  Gregor J.
  */
 final class Complete implements Reader

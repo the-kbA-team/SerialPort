@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\kbATeam\SerialPort\Streams\Reader;
+namespace Tests\kbATeam\SerialPort\Streams\Readers;
 
 use kbATeam\SerialPort\Interfaces\Stream;
-use kbATeam\SerialPort\Streams\Reader\Complete;
+use kbATeam\SerialPort\Streams\Readers\Complete;
 use kbATeam\SerialPort\Streams\Timeouts\Seconds;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class CompleteTest
- * @package Tests\kbATeam\SerialPort\Streams\Reader
+ * @package Tests\kbATeam\SerialPort\Streams\Readers
  * @author  Gregor J.
  */
 final class CompleteTest extends TestCase

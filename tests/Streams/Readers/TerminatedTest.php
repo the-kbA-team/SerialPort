@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\kbATeam\SerialPort\Streams\Reader;
+namespace Tests\kbATeam\SerialPort\Streams\Readers;
 
 use kbATeam\SerialPort\Exceptions\DomainException;
 use kbATeam\SerialPort\Exceptions\EofException;
 use kbATeam\SerialPort\Exceptions\ReadException;
 use kbATeam\SerialPort\Exceptions\TimeoutException;
 use kbATeam\SerialPort\Interfaces\Stream;
-use kbATeam\SerialPort\Streams\Reader\Terminated;
+use kbATeam\SerialPort\Streams\Readers\Terminated;
 use kbATeam\SerialPort\Streams\Timeouts\Seconds;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class TerminatedTest
- * @package Tests\kbATeam\SerialPort\Streams\Reader
+ * @package Tests\kbATeam\SerialPort\Streams\Readers
  * @author  Gregor J.
  */
 final class TerminatedTest extends TestCase
