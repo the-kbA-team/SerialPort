@@ -4,8 +4,7 @@ namespace kbATeam\SerialPort\Interfaces\Communication;
 
 /**
  * A single response value can only be a primitive type (bool, int, float or
- * string). The type of the value can be used to store a unit (ampere, seconds,
- * celsius).
+ * string). The value optionally has a unit like ampere, seconds, celsius, etc.
  * @package kbATeam\SerialPort\Interfaces
  * @author  Gregor J.
  */
@@ -19,11 +18,10 @@ interface Value
     public function get();
 
     /**
-     * Get the type string of this value, e.g. a unit like ampere, seconds, or
-     * celsius.
-     * @return string|null Returns null in case this value has no type.
+     * Get the unit of this value, e.g. ampere, seconds, celsius, etc.
+     * @return string|null Returns null in case this value has no unit.
      */
-    public function type(): ?string;
+    public function getUnit(): ?string;
 
     /**
      * Transform this value to a printable string for logging.
