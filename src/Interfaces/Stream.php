@@ -15,6 +15,12 @@ namespace kbATeam\SerialPort\Interfaces;
 interface Stream
 {
     /**
+     * Has the stream already been opened?
+     * @return bool
+     */
+    public function isOpen(): bool;
+
+    /**
      * Opens a stream
      * @throws \kbATeam\SerialPort\Exceptions\OpenStreamException
      * @throws \kbATeam\SerialPort\Exceptions\StreamStateException

@@ -77,9 +77,17 @@ final class Socket implements Stream
     /**
      * @inheritDoc
      */
+    public function isOpen(): bool
+    {
+        return is_resource($this->socket);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function open(): void
     {
-        if (is_resource($this->socket)) {
+        if ($this->isOpen()) {
             throw new StreamStateException('Stream already opened.');
         }
         $socket = @fsockopen($this->host, $this->port, $errno, $errstr, $this->connectionTimeout);
@@ -94,7 +102,7 @@ final class Socket implements Stream
      */
     public function close(): void
     {
-        if (is_resource($this->socket)) {
+        if ($this->isOpen()) {
             fclose($this->socket);
             $this->socket = null;
         }
@@ -105,7 +113,7 @@ final class Socket implements Stream
      */
     public function write(string $string): int
     {
-        if (!is_resource($this->socket)) {
+        if (!$this->isOpen()) {
             throw new StreamStateException('Stream not opened.');
         }
         $length = strlen($string);
@@ -121,7 +129,7 @@ final class Socket implements Stream
      */
     public function readChar(): ?string
     {
-        if (!is_resource($this->socket)) {
+        if (!$this->isOpen()) {
             throw new StreamStateException('Stream not opened.');
         }
         $char = fgetc($this->socket);
@@ -136,7 +144,7 @@ final class Socket implements Stream
      */
     public function setTimeout(int $seconds, int $microseconds): bool
     {
-        if (!is_resource($this->socket)) {
+        if (!$this->isOpen()) {
             throw new StreamStateException('Stream not opened.');
         }
         return stream_set_timeout($this->socket, $seconds, $microseconds);
@@ -147,7 +155,7 @@ final class Socket implements Stream
      */
     public function timedOut(): bool
     {
-        if (!is_resource($this->socket)) {
+        if (!$this->isOpen()) {
             throw new StreamStateException('Stream not opened.');
         }
         $metadata = stream_get_meta_data($this->socket);

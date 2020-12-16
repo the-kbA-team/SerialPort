@@ -3,7 +3,7 @@
 namespace kbATeam\SerialPort\Interfaces;
 
 use kbATeam\SerialPort\Interfaces\Communication\Command;
-use kbATeam\SerialPort\Interfaces\Communication\Response;
+use kbATeam\SerialPort\Interfaces\Communication\Container;
 
 /**
  * A stream communication interface to send commands and get responses.
@@ -28,16 +28,15 @@ interface Communication
     /**
      * Invoke a command on the stream.
      * @param \kbATeam\SerialPort\Interfaces\Communication\Command $command
-     * @return \kbATeam\SerialPort\Interfaces\Communication\Response|null Returns
+     * @return \kbATeam\SerialPort\Interfaces\Communication\Container|null Returns
      *                                                                    null in
      *                                                                    case the
      *                                                                    command
      *                                                                    expects no
      *                                                                    response
-     * @throws \kbATeam\SerialPort\Exceptions\StreamStateException
      * @throws \kbATeam\SerialPort\Exceptions\WriteStreamException
      * @throws \kbATeam\SerialPort\Exceptions\TimeoutException
      * @throws \kbATeam\SerialPort\Exceptions\EofException
      */
-    public function invoke(Command $command): ?Response;
+    public function invoke(Command $command): ?Container;
 }

@@ -3,7 +3,7 @@
 namespace kbATeam\SerialPort;
 
 use kbATeam\SerialPort\Interfaces\Communication\Command;
-use kbATeam\SerialPort\Interfaces\Communication\Response;
+use kbATeam\SerialPort\Interfaces\Communication\Container;
 use kbATeam\SerialPort\Interfaces\Communication;
 use kbATeam\SerialPort\Interfaces\Stream;
 
@@ -29,7 +29,7 @@ final class SerialPort implements Communication
     }
 
     /**
-     * Close stream
+     * @inheritDoc
      */
     public function __destruct()
     {
@@ -39,14 +39,8 @@ final class SerialPort implements Communication
     /**
      * @inheritDoc
      */
-    public function invoke(Command $command): ?Response
+    public function invoke(Command $command): ?Container
     {
-        $this->stream->write($command->get());
-        if (!$command->expectResponse()) {
-            return null;
-        }
-        $reader = $command->getReader();
-        $response = $reader->read($command->getTimeout());
-        return $command->getResponse($response);
+        return $command->invoke($this->stream);
     }
 }

@@ -2,56 +2,32 @@
 
 namespace kbATeam\SerialPort\Interfaces\Communication;
 
-use kbATeam\SerialPort\Interfaces\Stream\Reader;
-use kbATeam\SerialPort\Interfaces\Stream\Timeout;
+use kbATeam\SerialPort\Interfaces\Stream;
 
 /**
- * A command is a string sent to a serial port. Depending on the command,
- * there can be a response containing values. Therefore the command not only
- * defines the command string, but also which values to expect and how long to
- * wait for these values.
+ * A Command is a string sent to a serial port. Depending on the Command,
+ * there can be a Container containing Values. Therefore the Command not only
+ * defines the command string, but also which Values to expect, how to read
+ * them, and how long to wait for them.
  * @package kbATeam\SerialPort\Interfaces
  * @author  Gregor J.
  */
 interface Command
 {
     /**
-     * Get the command including all parameters.
-     * @return string
+     * Invoke this Command on the given stream.
+     * @param \kbATeam\SerialPort\Interfaces\Stream $stream
+     * @return \kbATeam\SerialPort\Interfaces\Communication\Container
+     * @throws \kbATeam\SerialPort\Exceptions\WriteStreamException
+     * @throws \kbATeam\SerialPort\Exceptions\TimeoutException
+     * @throws \kbATeam\SerialPort\Exceptions\EofException
      */
-    public function get(): string;
+    public function invoke(Stream $stream): ?Container;
 
     /**
-     * Transform the command to a printable string for logging.
-     * Non-printable characters are expected to be displayed as printable.
+     * Transform the Command to a printable string for logging.
+     * Non-printable characters are expected to be displayed as printable!
      * @return string
      */
     public function __toString(): string;
-
-    /**
-     * Expect a response after invoking the command?
-     * @return bool
-     */
-    public function expectResponse(): bool;
-
-    /**
-     * Return a reader instance.
-     * The command defines how to read the response.
-     * @return \kbATeam\SerialPort\Interfaces\Stream\Reader
-     */
-    public function getReader(): Reader;
-
-    /**
-     * Create a response instance from the given response string.
-     * @param string $response
-     * @return \kbATeam\SerialPort\Interfaces\Communication\Response
-     */
-    public function getResponse(string $response): Response;
-
-    /**
-     * Get the timeout to wait for a reply, in case this command expects a
-     * response.
-     * @return \kbATeam\SerialPort\Interfaces\Stream\Timeout Returns NULL in case this command expects no response.
-     */
-    public function getTimeout(): ?Timeout;
 }
