@@ -19,8 +19,7 @@ interface Command
      * @param \kbATeam\SerialPort\Interfaces\Stream $stream
      * @return \kbATeam\SerialPort\Interfaces\Communication\Container
      * @throws \kbATeam\SerialPort\Exceptions\WriteStreamException
-     * @throws \kbATeam\SerialPort\Exceptions\TimeoutException
-     * @throws \kbATeam\SerialPort\Exceptions\EofException
+     * @throws \kbATeam\SerialPort\Exceptions\ReadException
      */
     public function invoke(Stream $stream): ?Container;
 

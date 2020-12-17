@@ -35,8 +35,7 @@ interface Communication
      *                                                                    expects no
      *                                                                    response
      * @throws \kbATeam\SerialPort\Exceptions\WriteStreamException
-     * @throws \kbATeam\SerialPort\Exceptions\TimeoutException
-     * @throws \kbATeam\SerialPort\Exceptions\EofException
+     * @throws \kbATeam\SerialPort\Exceptions\ReadException
      */
     public function invoke(Command $command): ?Container;
 }
